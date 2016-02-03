@@ -1,14 +1,20 @@
-import click,os,textwrap
+import click,os,sys,textwrap
 from datetime import datetime
 from slugify import slugify
+
+from jekyllutils.lib.configs import get_posts_dir
+
 
 @click.command()
 @click.option('--tag', '-t', multiple=True)
 @click.option('--category','-c',default=['technology'])
-@click.option('--path-to-posts','-p',type=click.Path())
 @click.argument('title')
-def new(title,tag,category,path_to_posts):
-    
+def new(title,tag,category):
+    """Creates an empty markdown post with the given title for Jekyll in the 
+    specified path. It will include a front-matter with the default options
+    and optional tags or categories."""
+
+
     contents = """
     ---
     layout: page
@@ -36,9 +42,12 @@ def new(title,tag,category,path_to_posts):
     file_name = date.strftime("%Y-%m-%d")+"-"+slug+".markdown"
 
     current_dir = os.path.dirname(os.path.realpath(__file__))
-    path_to_file = current_dir+"/"+path_to_posts.rstrip("/")+"/"+file_name
+    path_to_file = current_dir+"/"+get_posts_dir().rstrip("/")+"/"+file_name
+
+    print(path_to_file)
+    sys.exit()
 
     with open(path_to_file,"w") as f:
         f.write(textwrap.dedent(contents).lstrip().format(title,date_str,tags,categories))
 
-    print(path_to_file)
+    click.echo(path_to_file)

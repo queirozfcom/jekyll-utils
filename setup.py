@@ -1,17 +1,22 @@
 from setuptools import setup
 
 setup(
-    name="JekyllUtils",
-    version='1.0',
-    py_modules=['generators'],
-    install_requires=[
-        'Click',
-        'python-slugify'
-    ],
-    entry_points='''
+        name="JekyllUtils",
+        version='0.1',
+        py_modules=['generators'],
+        install_requires=[
+            'click',
+            'python-slugify',
+            'appdirs',
+            'toml'
+        ],
+        entry_points='''
         [console_scripts]
-        new=generators:new
+        jk-new = jekyllutils.generators:new
+        jk-config-set-editor = jekyllutils.configs:set_editor
+        jk-config-set-posts-path = jekyllutils.configs:set_path_to_posts_dir
+        jk-config-dump-configs = jekyllutils.configs:dump_configs
+        jk-config-clear-configs = jekyllutils.configs:clear_configs
     '''
 
 )
-    
