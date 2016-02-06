@@ -1,19 +1,27 @@
-import click,os,sys,textwrap
-from datetime import datetime
-from slugify import slugify
+import click, os, sys, textwrap, time
 
-from jekyllutils.lib.configs import get_posts_dir
+from datetime import datetime
+
+from jekyllutils.lib.editors import get_executable_from_name
+from jekyllutils.lib.messages import wrap_success
+from slugify import slugify
+from subprocess import call
+
+from jekyllutils.lib.configs import get_path_to_posts_dir, get_editor_name
 
 
 @click.command()
-@click.option('--tag', '-t', multiple=True)
-@click.option('--category','-c',default=['technology'])
+@click.option('--tag', '-t', multiple=True, help="Multiple values allowed")
+@click.option('--category', '-c', default=['technology'],
+              help="Multiple values allowed")
+@click.option('--edit', is_flag=True,
+              help="If this option is passed, open an editor to edit the newly-created post")
 @click.argument('title')
-def new(title,tag,category):
+def new(title, tag, category, edit):
     """Creates an empty markdown post with the given title for Jekyll in the 
-    specified path. It will include a front-matter with the default options
-    and optional tags or categories."""
-
+    directory specified by the configs. It will include a front-matter
+    with the default options and optional tags or categories.
+    """
 
     contents = """
     ---
@@ -36,18 +44,24 @@ def new(title,tag,category):
     slug = slugify(title)
     date = datetime.now()
     date_str = date.strftime("%Y-%m-%d %H:%M:%S %z")
-    tags = ",".join(list(map(lambda el: '"'+str(el).strip()+'"',tag)))
-    categories = ",".join(list(map(lambda el: '"'+str(el).strip()+'"',category)))
+    tags = ",".join(list(map(lambda el: '"' + str(el).strip() + '"', tag)))
+    categories = ",".join(
+            list(map(lambda el: '"' + str(el).strip() + '"', category)))
 
-    file_name = date.strftime("%Y-%m-%d")+"-"+slug+".markdown"
+    file_name = date.strftime("%Y-%m-%d") + "-" + slug + ".markdown"
 
-    current_dir = os.path.dirname(os.path.realpath(__file__))
-    path_to_file = current_dir+"/"+get_posts_dir().rstrip("/")+"/"+file_name
+    path_to_file = get_path_to_posts_dir().rstrip("/") + "/" + file_name
 
-    print(path_to_file)
-    sys.exit()
+    with open(path_to_file, "w") as f:
+        f.write(textwrap
+                .dedent(contents)
+                .lstrip()
+                .format(title, date_str, tags, categories))
 
-    with open(path_to_file,"w") as f:
-        f.write(textwrap.dedent(contents).lstrip().format(title,date_str,tags,categories))
+    if edit:
+        editor = get_editor_name()
+        editor_executable = get_executable_from_name(editor)
+        call([editor_executable, path_to_file])
+        time.sleep(2)  # just to give the os time for the editor to load
 
-    click.echo(path_to_file)
+    click.echo(wrap_success("Post created at: {0}".format(path_to_file)))
