@@ -1,8 +1,8 @@
 import click
 import toml
 
-from jekyllutils.lib import files, configs
-from jekyllutils.lib.messages import wrap_success
+from jekyllutils.helpers import files, configs
+from jekyllutils.helpers.messages import wrap_success
 
 
 @click.command()

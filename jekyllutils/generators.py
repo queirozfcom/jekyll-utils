@@ -1,13 +1,13 @@
-import click, os, sys, textwrap, time
-
 from datetime import datetime
-
-from jekyllutils.lib.editors import get_executable_from_name
-from jekyllutils.lib.messages import wrap_success
-from slugify import slugify
 from subprocess import call
 
-from jekyllutils.lib.configs import get_path_to_posts_dir, get_editor_name
+import click
+import textwrap
+import time
+from jekyllutils.helpers.configs import get_path_to_posts_dir, get_editor_name
+from jekyllutils.helpers.editors import get_executable_from_name
+from jekyllutils.helpers.messages import wrap_success
+from slugify import slugify
 
 
 @click.command()
