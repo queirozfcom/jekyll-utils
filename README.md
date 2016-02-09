@@ -5,13 +5,15 @@ A small command-line application (based upon [click](http://click.pocoo.org/6/))
 
 ## Installation
 
-Prerequisites: `pip`
+- Prerequisites: `pip`
 
-- `$ git clone https://github.com/queirozfcom/jekyll-utils`
-- `$ cd jekyll-utils`
-- `$ pip install .`
+- Installing jekyll-utils using pip
 
-This will install all commands to your virtualenv. Type `jk-` and then hit `<TAB>` to see all available commands.
+ - `$ git clone https://github.com/queirozfcom/jekyll-utils`
+ - `$ cd jekyll-utils`
+ - `$ pip install .`
+
+ This will install all commands to your virtualenv. Type `jk-` and then hit `<TAB>` to see all available commands.
 
 - Initial configs. These are needed to start using the tools:
 
