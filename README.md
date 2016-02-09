@@ -13,10 +13,10 @@ Prerequisites: `pip`
 
 This will install all commands to your virtualenv. Type `jk-` and then hit `<TAB>` to see all available commands.
 
-Initial configs. These are needed to start using the tools:
+- Initial configs. These are needed to start using the tools:
 
-- `$ jk-config-set-editor <your editor name>`
-- `$ jk-config-set-posts-path <path to the _posts directory>`
+ - `$ jk-config-set-editor <your editor name>`
+ - `$ jk-config-set-posts-path <path to the _posts directory>`
 
 ## Features
 
