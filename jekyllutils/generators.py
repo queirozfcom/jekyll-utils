@@ -1,9 +1,9 @@
+import textwrap
+import time
 from datetime import datetime
 from subprocess import call
 
 import click
-import textwrap
-import time
 from jekyllutils.helpers.configs import get_path_to_posts_dir, get_editor_name
 from jekyllutils.helpers.editors import get_executable_from_name
 from jekyllutils.helpers.messages import wrap_success
@@ -17,7 +17,7 @@ from slugify import slugify
 @click.option('--edit', is_flag=True,
               help="If this option is passed, open an editor to edit the newly-created post")
 @click.argument('title')
-def new(title, tag, category, edit):
+def new_post(title, tag, category, edit):
     """Creates an empty markdown post with the given title for Jekyll in the 
     directory specified by the configs. It will include a front-matter
     with the default options and optional tags or categories.

@@ -1,5 +1,4 @@
 import click
-import toml
 
 from jekyllutils.helpers import files, configs
 from jekyllutils.helpers.messages import wrap_success
