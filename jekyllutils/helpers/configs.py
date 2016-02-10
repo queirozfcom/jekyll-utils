@@ -1,7 +1,7 @@
 import errno
+import sys
 
 import os
-import sys
 import toml
 from appdirs import user_config_dir
 from jekyllutils.helpers.messages import wrap_error
