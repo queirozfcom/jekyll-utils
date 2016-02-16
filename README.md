@@ -5,7 +5,9 @@ A small Python 3 command-line application (based upon [click](http://click.pocoo
 
 ## Installation
 
-- Prerequisites: `pip` and `virtualenv`
+- Prerequisites: `virtualenv`
+
+ - On Ubuntu, install it via `$ sudo apt-get install python-virtualenv`
 
 - Installing jekyll-utils using pip
 
