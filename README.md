@@ -3,6 +3,8 @@ jekyll-utils
 
 A small Python 3 command-line application (based upon [click](http://click.pocoo.org/6/)) to speed up some common tasks for those who blog using Jekyll.
 
+This will be **especially** useful for people who post many short blog entries, as opposed to those who prefer to blog less frequently, with longer posts.
+
 ## Installation
 
 - Prerequisites: `virtualenv`
