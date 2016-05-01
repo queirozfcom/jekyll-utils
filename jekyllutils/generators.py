@@ -14,32 +14,21 @@ from slugify import slugify
 @click.option('--tag', '-t', multiple=True, help="Multiple values allowed")
 @click.option('--category', '-c', default=['technology'],
               help="Multiple values allowed")
-@click.option('--edit', is_flag=True,
+@click.option('--edit/--no-edit', default=True,
               help="If this option is passed, open an editor to edit the newly-created post")
+@click.option('--image/--no-image', default=False,
+              help="If this option is passed, include image section in the newly-created post")
 @click.argument('title')
-def new_post(title, tag, category, edit):
+def new_post(title, tag, category, edit, image):
     """Creates an empty markdown post with the given title for Jekyll in the 
     directory specified by the configs. It will include a front-matter
     with the default options and optional tags or categories.
     """
 
-    contents = """
-    ---
-    layout: page
-    header: no
-    title: "{0}"
-    date: {1}
-    tags: [{2}]
-    categories: [{3}]
-    image:
-        title: landscape/archer.png
-        thumb: square/archer.png
-        caption: Source
-        caption_url: https://www.instagram.com/natasha_hellegouarch/
-    comments: true
-    ---
-
-    """
+    if image:
+        contents = _get_contents_img()
+    else:
+        contents = _get_contents_no_img()
 
     slug = slugify(title)
     date = datetime.now()
@@ -65,3 +54,38 @@ def new_post(title, tag, category, edit):
         time.sleep(2)  # just to give the os time for the editor to load
 
     click.echo(wrap_success("Post created at: {0}".format(path_to_file)))
+
+
+def _get_contents_no_img():
+    return """
+    ---
+    layout: page
+    header: no
+    title: "{0}"
+    date: {1}
+    tags: [{2}]
+    categories: [{3}]
+    comments: true
+    ---
+
+    """
+
+
+def _get_contents_img():
+    return """
+    ---
+    layout: page
+    header: no
+    title: "{0}"
+    date: {1}
+    tags: [{2}]
+    categories: [{3}]
+    image:
+        title: landscape/archer.png
+        thumb: square/archer.png
+        caption: Source
+        caption_url: https://www.instagram.com/natasha_hellegouarch/
+    comments: true
+    ---
+
+    """
