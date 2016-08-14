@@ -16,7 +16,7 @@ from slugify import slugify
               help="Multiple values allowed")
 @click.option('--edit/--no-edit', default=True,
               help="If this option is passed, open an editor to edit the newly-created post")
-@click.option('--image/--no-image', default=False,
+@click.option('--image/--no-image', default=True,
               help="If this option is passed, include image section in the newly-created post")
 @click.argument('title')
 def new_post(title, tag, category, edit, image):
@@ -80,6 +80,9 @@ def _get_contents_img():
     date: {1}
     tags: [{2}]
     categories: [{3}]
+    meta_description: | 
+        Lorem ipsum dolor sit amet, consectetur adipiscing elit. Duis ac arcu urna. Fusce non metus massa. 
+        Fusce vitae feugiat tortor. Donec ut varius dui. Phasellus condimentum, quam eu vehicula cursus, magna erat porta.
     image:
         title: landscape/archer.png
         thumb: square/archer.png
