@@ -84,10 +84,10 @@ def _get_contents_img():
         Lorem ipsum dolor sit amet, consectetur adipiscing elit. Duis ac arcu urna. Fusce non metus massa. 
         Fusce vitae feugiat tortor. Donec ut varius dui. Phasellus condimentum, quam eu vehicula cursus, magna erat porta.
     image:
-        title: landscape/archer.png
-        thumb: square/archer.png
+        title: landscape/icon.png
+        thumb: square/icon.png
         caption: Source
-        caption_url: https://www.instagram.com/natasha_hellegouarch/
+        caption_url: https://www.iconfinder.com/webalys
     comments: true
     ---
 
