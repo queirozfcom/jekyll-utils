@@ -49,19 +49,19 @@ def list_filenames_by_tag(absolute_directory, tags):
     """
     matches = []
 
-
     for root, _, filenames in os.walk(absolute_directory):
         for filename in filenames:
             absolute_path_to_file = os.path.join(root, filename)
 
-            with open(absolute_path_to_file,"r") as f:
+            with open(absolute_path_to_file, "r") as f:
                 for line in f:
                     if line.strip().startswith("tags:"):
-                        if _match_all(line,tags):
+                        if _match_all(line, tags):
                             matches.append(filename)
                         break
 
     return matches
+
 
 def list_unpublished_filenames(absolute_directory):
     """
@@ -73,22 +73,21 @@ def list_unpublished_filenames(absolute_directory):
     """
     matches = []
 
-
     for root, _, filenames in os.walk(absolute_directory):
         for filename in filenames:
             absolute_path_to_file = os.path.join(root, filename)
 
-            with open(absolute_path_to_file,"r") as f:
+            with open(absolute_path_to_file, "r") as f:
                 for line in f:
                     if line.strip().startswith("published:"):
-                        if _match_all(line,("false",)):
+                        if _match_all(line, ("false",)):
                             matches.append(filename)
                         break
 
     return matches
 
 
-def _match_all(s,keywords):
+def _match_all(s, keywords):
     """
     True if all strings in keywords are contained in s, False otherwise.
     Case-insensitive.

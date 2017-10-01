@@ -12,14 +12,12 @@ from slugify import slugify
 
 @click.command()
 @click.option('--tag', '-t', multiple=True, help="Multiple values allowed")
-@click.option('--category', '-c', default=['technology'],
-              help="Multiple values allowed")
 @click.option('--edit/--no-edit', default=True,
               help="If this option is passed, open an editor to edit the newly-created post")
 @click.option('--image/--no-image', default=True,
               help="If this option is passed, include image section in the newly-created post")
 @click.argument('title')
-def new_post(title, tag, category, edit, image):
+def new_post(title, tag, edit, image):
     """Creates an empty markdown post with the given title for Jekyll in the 
     directory specified by the configs. It will include a front-matter
     with the default options and optional tags or categories.
@@ -34,8 +32,6 @@ def new_post(title, tag, category, edit, image):
     date = datetime.now()
     date_str = date.strftime("%Y-%m-%d %H:%M:%S %z")
     tags = ",".join(list(map(lambda el: '"' + str(el).strip() + '"', tag)))
-    categories = ",".join(
-            list(map(lambda el: '"' + str(el).strip() + '"', category)))
 
     file_name = date.strftime("%Y-%m-%d") + "-" + slug + ".markdown"
 
@@ -45,7 +41,7 @@ def new_post(title, tag, category, edit, image):
         f.write(textwrap
                 .dedent(contents)
                 .lstrip()
-                .format(title, date_str, tags, categories))
+                .format(title, date_str, tags))
 
     if edit:
         editor = get_editor_name()
@@ -64,7 +60,6 @@ def _get_contents_no_img():
     title: "{0}"
     date: {1}
     tags: [{2}]
-    categories: [{3}]
     comments: true
     ---
 
@@ -79,7 +74,6 @@ def _get_contents_img():
     title: "{0}"
     date: {1}
     tags: [{2}]
-    categories: [{3}]
     meta_description: | 
         Lorem ipsum dolor sit amet, consectetur adipiscing elit. Duis ac arcu urna. Fusce non metus massa. 
         Fusce vitae feugiat tortor. Donec ut varius dui. Phasellus condimentum, quam eu vehicula cursus, magna erat porta.

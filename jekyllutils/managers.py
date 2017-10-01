@@ -35,10 +35,10 @@ def edit_post(keywords):
         call([editor_executable, path_to_file])
         time.sleep(2)  # just to give the os time for the editor to load
 
+
 @click.command()
 @click.argument('tags', nargs=-1)
 def list_by_tag(tags):
-
     if len(tags) == 0:
         raise click.UsageError('Please supply at least one tag as argument')
 
@@ -48,11 +48,12 @@ def list_by_tag(tags):
     for filename in sorted(filenames):
         click.echo(filename)
 
+
 @click.command()
 def list_unpublished():
     path_to_posts_directory = resolve_path(get_path_to_posts_dir())
     filenames = list_unpublished_filenames(path_to_posts_directory)
 
     # show older stuff first, so that it forces me to make a decision on those
-    for filename in sorted(filenames,reverse=True):
+    for filename in sorted(filenames, reverse=True):
         click.echo(filename)
