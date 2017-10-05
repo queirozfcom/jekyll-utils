@@ -2,7 +2,7 @@ from setuptools import setup, find_packages
 
 setup(
         name="jekyllutils",
-        version='0.2',
+        version='0.3',
         py_modules=['generators'],
         packages=find_packages(),
         include_package_data=True,
@@ -15,6 +15,7 @@ setup(
         entry_points='''
         [console_scripts]
         jk-new=jekyllutils.generators:new_post
+        jk-new-paper-summary=jekyllutils.generators:new_post_paper_summary
         jk-edit=jekyllutils.managers:edit_post
         jk-config-set-editor=jekyllutils.configs:set_editor
         jk-config-set-posts-path=jekyllutils.configs:set_path_to_posts_dir
