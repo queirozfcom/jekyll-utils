@@ -60,7 +60,9 @@ def new_post_paper_summary(title, tag):
 
     contents = _get_contents_paper_summary()
 
-    slug = slugify(title)
+    title_full = "Paper Summary: "+title
+
+    slug = slugify(title_full)
     date = datetime.now()
     date_str = date.strftime("%Y-%m-%d %H:%M:%S %z")
     tags = ",".join(list(map(lambda el: '"' + str(el).strip() + '"', tag)))
@@ -73,7 +75,7 @@ def new_post_paper_summary(title, tag):
         f.write(textwrap
                 .dedent(contents)
                 .lstrip()
-                .format(title, date_str, tags))
+                .format(title_full, date_str, tags, title))
 
     editor = get_editor_name()
     editor_executable = get_executable_from_name(editor)
@@ -92,6 +94,7 @@ def _get_contents_no_img():
     date: {1}
     tags: [{2}]
     comments: true
+    published: false
     ---
 
     """
@@ -114,6 +117,7 @@ def _get_contents_img():
         caption: Source
         caption_url: https://www.iconfinder.com/webalys
     comments: true
+    published: false
     ---
 
     """
@@ -127,14 +131,14 @@ def _get_contents_paper_summary():
     date: {1}
     tags: ["paper-summary",{2}]
     meta_description: | 
-        Lorem ipsum dolor sit amet, consectetur adipiscing elit. Duis ac arcu urna. Fusce non metus massa. 
-        Fusce vitae feugiat tortor. Donec ut varius dui. Phasellus condimentum, quam eu vehicula cursus, magna erat porta.
+        Summary of the YEAR article "{3}" by AUTHORS.
     image:
         thumb: square/academia_hat.png      
     comments: true
+    published: false
     ---
     
-    > <span style="font-weight:bold">Please note</span> This post is mainly intended for personal use. It is not peer-reviewed work and should not be taken as such.
+    > <span style="font-weight:bold">Please note</span> This post is mainly intended for my **personal use**. It is not peer-reviewed work and should not be taken as such.
 
     ## WHAT
     
