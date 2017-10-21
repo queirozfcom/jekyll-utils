@@ -2,7 +2,7 @@ from setuptools import setup, find_packages
 
 setup(
         name="jekyllutils",
-        version='0.3',
+        version='0.4',
         py_modules=['generators'],
         packages=find_packages(),
         include_package_data=True,

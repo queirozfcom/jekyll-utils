@@ -38,22 +38,35 @@ def edit_post(keywords):
 
 @click.command()
 @click.argument('tags', nargs=-1)
-def list_by_tag(tags):
+@click.option('--reverse/--no-reverse', default=True,
+              help="Default is to list files in reverse chronological order, just like git log")
+def list_by_tag(tags, reverse):
     if len(tags) == 0:
         raise click.UsageError('Please supply at least one tag as argument')
 
     path_to_posts_directory = resolve_path(get_path_to_posts_dir())
     filenames = list_filenames_by_tag(path_to_posts_directory, tags)
 
-    for filename in sorted(filenames):
-        click.echo(filename)
+    if len(filenames) == 0:
+        raise click.UsageError('No files match given tags')
+    else:
+        if reverse:
+            click.echo_via_pager('\n'.join(sorted(filenames, reverse=True)))
+        else:
+            click.echo_via_pager('\n'.join(sorted(filenames)))
 
 
 @click.command()
-def list_unpublished():
+@click.option('--reverse/--no-reverse', default=True,
+              help="Default is to list files in reverse chronological order, just like git log")
+def list_unpublished(reverse):
     path_to_posts_directory = resolve_path(get_path_to_posts_dir())
     filenames = list_unpublished_filenames(path_to_posts_directory)
 
-    # show older stuff first, so that it forces me to make a decision on those
-    for filename in sorted(filenames, reverse=True):
-        click.echo(filename)
+    if len(filenames) == 0:
+        raise click.UsageError('No files found. Well done!')
+    else:
+        if reverse:
+            click.echo_via_pager('\n'.join(sorted(filenames, reverse=True)))
+        else:
+            click.echo_via_pager('\n'.join(sorted(filenames)))
