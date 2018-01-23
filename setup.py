@@ -16,6 +16,7 @@ setup(
         [console_scripts]
         jk-new=jekyllutils.generators:new_post
         jk-new-paper-summary=jekyllutils.generators:new_post_paper_summary
+        jk-new-crypto-overview=jekyllutils.generators:new_post_crypto_asset_overview
         jk-edit=jekyllutils.managers:edit_post
         jk-config-set-editor=jekyllutils.configs:set_editor
         jk-config-set-posts-path=jekyllutils.configs:set_path_to_posts_dir
