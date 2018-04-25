@@ -129,6 +129,7 @@ def _get_contents_no_img():
     tags: [{2}]
     comments: true
     published: false
+    toc: true
     ---
 
     """
@@ -152,6 +153,7 @@ def _get_contents_img():
         caption_url: https://www.iconfinder.com/webalys
     comments: true
     published: false
+    toc: true
     ---
 
     """
@@ -206,6 +208,7 @@ def _get_contents_crypto_asset_overview():
         thumb: square/cryptocurrency-icons/128/black/<ICON-HERE>.png      
     comments: true
     published: false
+    toc: true
     ---
 
     > <span style="color:red; font-weight:bold">DISCLAIMER</span> This post reflects my personal opinion only; it does not constitute investment advice of any kind.
