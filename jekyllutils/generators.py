@@ -177,15 +177,24 @@ def _get_contents_paper_summary():
     > <span style="font-weight:bold">Please note</span> This post is mainly intended for my **personal use**. It is not peer-reviewed work and should not be taken as such.
 
     ## WHAT
+
+
+    ## WHY	
     
     
     ## HOW
     
     
     ## CLAIMS
+
     
-    
-    ## NOTES
+    ## QUOTES
+
+
+    ## NOTES  
+
+
+    ## MY 2¢
 
     -----
     

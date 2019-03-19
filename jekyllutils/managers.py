@@ -5,6 +5,7 @@ import click
 from jekyllutils.helpers.configs import get_path_to_posts_dir, get_editor_name
 from jekyllutils.helpers.editors import get_executable_from_name
 from jekyllutils.helpers.files import list_files, list_filenames_by_tag, list_unpublished_filenames, resolve_path
+from jekyllutils.helpers.sorting import sort_ignoring_brackets
 
 
 @click.command()
@@ -59,14 +60,17 @@ def list_by_tag(tags, reverse):
 @click.command()
 @click.option('--reverse/--no-reverse', default=True,
               help="Default is to list files in reverse chronological order, just like git log")
-def list_unpublished(reverse):
+@click.option('--include-wip-alerts/--no-include-wip-alerts', default=True,
+              help="Whether to consider WIP posts as unpublished even though they be published")
+def list_unpublished(reverse, include_wip_alerts):
     path_to_posts_directory = resolve_path(get_path_to_posts_dir())
-    filenames = list_unpublished_filenames(path_to_posts_directory)
+    filenames = list_unpublished_filenames(path_to_posts_directory, include_wip_alerts)
 
     if len(filenames) == 0:
         raise click.UsageError('No files found. Well done!')
     else:
+
         if reverse:
-            click.echo_via_pager('\n'.join(sorted(filenames, reverse=True)))
+            click.echo_via_pager('\n'.join(sort_ignoring_brackets(filenames, reverse=True)))
         else:
-            click.echo_via_pager('\n'.join(sorted(filenames)))
+            click.echo_via_pager('\n'.join(sort_ignoring_brackets(filenames)))

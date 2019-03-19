@@ -63,13 +63,14 @@ def list_filenames_by_tag(absolute_directory, tags):
     return matches
 
 
-def list_unpublished_filenames(absolute_directory):
+def list_unpublished_filenames(absolute_directory, include_wip):
     """
     Returns all filenames under absolute_directory that are unpublished.
     (i.e. files where published: false in front-matter)
 
     :param absolute_directory:
-    :return: a list of the filenames,
+    :param include_wip: if true, also return files that contain "wip alert"
+    :return: a list of the filenames
     """
     matches = []
 
@@ -81,7 +82,10 @@ def list_unpublished_filenames(absolute_directory):
                 for line in f:
                     if line.strip().startswith("published:"):
                         if _match_all(line, ("false",)):
-                            matches.append(filename)
+                            matches.append("[UNP]" + filename)
+                        break
+                    if include_wip and ("wip alert" in line.lower()):
+                        matches.append("[WIP]" + filename)
                         break
 
     return matches
