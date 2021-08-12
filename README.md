@@ -9,7 +9,7 @@ This will be **especially** useful for people who post many short blog entries, 
 
 - Prerequisites: `virtualenv`
 
- - On Ubuntu, install it via `$ sudo apt-get install python-virtualenv`
+ - On Ubuntu, install it via `$ sudo apt-get install python3-virtualenv`
 
 - Installing jekyll-utils using pip
 
