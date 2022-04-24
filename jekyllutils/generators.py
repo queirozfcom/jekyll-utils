@@ -4,9 +4,9 @@ from datetime import datetime
 from subprocess import call
 
 import click
-from jekyllutils.helpers.configs import get_path_to_posts_dir, get_editor_name
+from jekyllutils.helpers.configs import get_posts_path, get_editor_name
 from jekyllutils.helpers.editors import get_executable_from_name
-from jekyllutils.helpers.messages import wrap_success
+from jekyllutils.helpers.colours import with_success_prefix
 from slugify import slugify
 
 
@@ -33,7 +33,7 @@ def new_post(title, tag, image):
 
     file_name = date.strftime("%Y-%m-%d") + "-" + slug + ".markdown"
 
-    path_to_file = get_path_to_posts_dir().rstrip("/") + "/" + file_name
+    path_to_file = get_posts_path().rstrip("/") + "/" + file_name
 
     with open(path_to_file, "w") as f:
         f.write(textwrap
@@ -46,7 +46,7 @@ def new_post(title, tag, image):
     call([editor_executable, path_to_file])
     time.sleep(2)  # just to give the os time for the editor to load
 
-    click.echo(wrap_success("Post created at: {0}".format(path_to_file)))
+    click.echo(with_success_prefix("Post created at: {0}".format(path_to_file)))
 
 
 @click.command()
@@ -60,7 +60,7 @@ def new_post_paper_summary(title, tag):
 
     contents = _get_contents_paper_summary()
 
-    title_full = "Paper Summary: "+title
+    title_full = "Paper Summary: " + title
 
     slug = slugify(title_full)
     date = datetime.now()
@@ -69,7 +69,7 @@ def new_post_paper_summary(title, tag):
 
     file_name = date.strftime("%Y-%m-%d") + "-" + slug + ".markdown"
 
-    path_to_file = get_path_to_posts_dir().rstrip("/") + "/" + file_name
+    path_to_file = get_posts_path().rstrip("/") + "/" + file_name
 
     with open(path_to_file, "w") as f:
         f.write(textwrap
@@ -82,7 +82,8 @@ def new_post_paper_summary(title, tag):
     call([editor_executable, path_to_file])
     time.sleep(2)  # just to give the os time for the editor to load
 
-    click.echo(wrap_success("Post (Paper Summary) created at: {0}".format(path_to_file)))
+    click.echo(with_success_prefix("Post (Paper Summary) created at: {0}".format(path_to_file)))
+
 
 @click.command()
 @click.option('--tag', '-t', multiple=True, help="Multiple values allowed")
@@ -95,7 +96,7 @@ def new_post_crypto_asset_overview(title, tag):
 
     contents = _get_contents_crypto_asset_overview()
 
-    title_full = "Crypto Asset Overview: "+title
+    title_full = "Crypto Asset Overview: " + title
 
     slug = slugify(title_full)
     date = datetime.now()
@@ -104,7 +105,7 @@ def new_post_crypto_asset_overview(title, tag):
 
     file_name = date.strftime("%Y-%m-%d") + "-" + slug + ".markdown"
 
-    path_to_file = get_path_to_posts_dir().rstrip("/") + "/" + file_name
+    path_to_file = get_posts_path().rstrip("/") + "/" + file_name
 
     with open(path_to_file, "w") as f:
         f.write(textwrap
@@ -117,7 +118,8 @@ def new_post_crypto_asset_overview(title, tag):
     call([editor_executable, path_to_file])
     time.sleep(2)  # just to give the os time for the editor to load
 
-    click.echo(wrap_success("Post (Paper Summary) created at: {0}".format(path_to_file)))
+    click.echo(with_success_prefix("Post (Paper Summary) created at: {0}".format(path_to_file)))
+
 
 def _get_contents_no_img():
     return """
@@ -157,6 +159,7 @@ def _get_contents_img():
     ---
 
     """
+
 
 def _get_contents_paper_summary():
     return """

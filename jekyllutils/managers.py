@@ -2,10 +2,10 @@ import time
 from subprocess import call
 
 import click
-from jekyllutils.helpers.configs import get_path_to_posts_dir, get_editor_name
+from jekyllutils.helpers.configs import get_posts_path, get_editor_name
 from jekyllutils.helpers.editors import get_executable_from_name
-from jekyllutils.helpers.files import list_files, list_filenames_by_tag, list_unpublished_filenames, resolve_path
-from jekyllutils.helpers.sorting import sort_ignoring_brackets
+from jekyllutils.files import list_files, list_filenames_by_tag, list_unpublished_filenames, resolve_path
+from jekyllutils.helpers.sorting import sort_filenames_ignoring_leading_text
 
 
 @click.command()
@@ -14,7 +14,7 @@ def edit_post(keywords):
     if len(keywords) == 0:
         raise click.UsageError('Please supply at least one keyword as argument')
 
-    path_to_posts_directory = resolve_path(get_path_to_posts_dir())
+    path_to_posts_directory = resolve_path(get_posts_path())
     post_files = list_files(path_to_posts_directory, keywords)
 
     if len(post_files) == 0:
@@ -45,7 +45,7 @@ def list_by_tag(tags, reverse):
     if len(tags) == 0:
         raise click.UsageError('Please supply at least one tag as argument')
 
-    path_to_posts_directory = resolve_path(get_path_to_posts_dir())
+    path_to_posts_directory = resolve_path(get_posts_path())
     filenames = list_filenames_by_tag(path_to_posts_directory, tags)
 
     if len(filenames) == 0:
@@ -61,9 +61,9 @@ def list_by_tag(tags, reverse):
 @click.option('--reverse/--no-reverse', default=True,
               help="Default is to list files in reverse chronological order, just like git log")
 @click.option('--include-wip-alerts/--no-include-wip-alerts', default=True,
-              help="Whether to consider WIP posts as unpublished even though they be published")
+              help="Whether to consider WIP posts and posts with \"TODOS\" as unpublished even though they are published")
 def list_unpublished(reverse, include_wip_alerts):
-    path_to_posts_directory = resolve_path(get_path_to_posts_dir())
+    path_to_posts_directory = resolve_path(get_posts_path())
     filenames = list_unpublished_filenames(path_to_posts_directory, include_wip_alerts)
 
     if len(filenames) == 0:
@@ -71,6 +71,8 @@ def list_unpublished(reverse, include_wip_alerts):
     else:
 
         if reverse:
-            click.echo_via_pager('\n'.join(sort_ignoring_brackets(filenames, reverse=True)))
+            output = click.echo_via_pager('\n'.join(sort_filenames_ignoring_leading_text(filenames, reverse=True)))
         else:
-            click.echo_via_pager('\n'.join(sort_ignoring_brackets(filenames)))
+            output = click.echo_via_pager('\n'.join(sort_filenames_ignoring_leading_text(filenames)))
+
+        return output

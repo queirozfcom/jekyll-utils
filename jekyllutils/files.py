@@ -1,6 +1,9 @@
+import os
+import re
 from pathlib import Path
 
-import os
+from jekyllutils.helpers.colours import wrap_yellow, wrap_blue, wrap_green
+from jekyllutils.helpers.text import match_all, filter_match_all
 
 
 def resolve_path(path, strip_trailing_slash=True):
@@ -28,7 +31,7 @@ def list_files(absolute_directory, keywords):
     matches = []
 
     for root, dirnames, filenames in os.walk(absolute_directory):
-        for filename in _filter_match_all(filenames, keywords):
+        for filename in filter_match_all(filenames, keywords):
             matches.append(os.path.join(root, filename))
 
     # remove the paths, return only file names
@@ -56,7 +59,7 @@ def list_filenames_by_tag(absolute_directory, tags):
             with open(absolute_path_to_file, "r") as f:
                 for line in f:
                     if line.strip().startswith("tags:"):
-                        if _match_all(line, tags):
+                        if match_all(line, tags):
                             matches.append(filename)
                         break
 
@@ -69,7 +72,7 @@ def list_unpublished_filenames(absolute_directory, include_wip):
     (i.e. files where published: false in front-matter)
 
     :param absolute_directory:
-    :param include_wip: if true, also return files that contain "wip alert"
+    :param include_wip: if true, also return files that contain "wip alert" and "TODO"
     :return: a list of the filenames
     """
     matches = []
@@ -79,47 +82,25 @@ def list_unpublished_filenames(absolute_directory, include_wip):
             absolute_path_to_file = os.path.join(root, filename)
 
             with open(absolute_path_to_file, "r") as f:
+
                 for line in f:
-                    if line.strip().startswith("published:"):
-                        if _match_all(line, ("false",)):
-                            matches.append("[UNP]" + filename)
+
+                    line_clean = line.strip().lower()
+
+                    if line_clean.startswith("published:") and match_all(line_clean, ("false",)):
+                        prefix = wrap_yellow("[UNP] ")
+                        matches.append(f"{prefix} {filename}")
                         break
-                    if include_wip and ("wip alert" in line.lower()):
-                        matches.append("[WIP]" + filename)
+                    elif include_wip and ("wip alert" in line_clean):
+                        prefix = wrap_blue("[WIP] ")
+                        matches.append(f"{prefix} {filename}")
+                        break
+                    elif include_wip and (re.search("todo: ", line_clean) or
+                                          re.search("todo\n", line_clean) or
+                                          re.search("^todo ", line_clean) or
+                                          re.search(" todo ", line_clean)):
+                        prefix = wrap_green("[TODO]")
+                        matches.append(f"{prefix} {filename}")
                         break
 
-    return matches
-
-
-def _match_all(s, keywords):
-    """
-    True if all strings in keywords are contained in s, False otherwise.
-    Case-insensitive.
-
-    :param s: string
-    :param keywords: a tuple containing keywords that should all be included
-    :return: True if all strings in keywords are contained in s, False otherwise
-    """
-
-    for kw in keywords:
-        if kw.lower().strip() not in s.lower().strip():
-            return False
-
-    return True
-
-
-def _filter_match_all(elements, keywords):
-    """
-    Returns the elements for which all keywords are contained.
-
-    :param elements: a list of strings to filter
-    :param keywords: a tuple containing keywords that should all be included
-    :return: matching matching elements
-    """
-    matching = []
-
-    for elem in elements:
-        if all(keyword in elem for keyword in keywords):
-            matching.append(elem)
-
-    return matching
+    return list(set(matches))
