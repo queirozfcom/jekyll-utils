@@ -193,6 +193,7 @@ def _get_contents_paper_summary():
     
     ## QUOTES
 
+    ## EXTENDS/USES
 
     ## NOTES  
 

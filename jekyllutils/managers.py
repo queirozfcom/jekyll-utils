@@ -6,6 +6,7 @@ from jekyllutils.helpers.configs import get_posts_path, get_editor_name
 from jekyllutils.helpers.editors import get_executable_from_name
 from jekyllutils.files import list_files, list_filenames_by_tag, list_unpublished_filenames, resolve_path
 from jekyllutils.helpers.sorting import sort_filenames_ignoring_leading_text
+from jekyllutils.helpers.colours import wrap_red, wrap_yellow
 
 
 @click.command()
@@ -18,10 +19,10 @@ def edit_post(keywords):
     post_files = list_files(path_to_posts_directory, keywords)
 
     if len(post_files) == 0:
-        raise click.UsageError('No files match the given keywords')
+        raise click.UsageError(wrap_red('No files match the given keywords'))
     elif len(post_files) > 1:
 
-        exception = click.UsageError('Multiple files match the given keywords')
+        exception = click.UsageError(wrap_yellow('Multiple files match the given keywords'))
         exception.show()
 
         for file in sorted(post_files[:10]):
