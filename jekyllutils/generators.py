@@ -179,6 +179,11 @@ def _get_contents_paper_summary():
     
     > <span style="font-weight:bold">Please note</span> This post is mainly intended for my **personal use**. It is not peer-reviewed work and should not be taken as such.
 
+      <div class="paper-screenshot-img-div" markdown="1">
+      ![alt-text](img-link)
+      *{3} [Source](link-to-paper)*
+      </div>
+
     ## WHAT
 
 
@@ -193,7 +198,9 @@ def _get_contents_paper_summary():
     
     ## QUOTES
 
+
     ## EXTENDS/USES
+
 
     ## NOTES  
 
