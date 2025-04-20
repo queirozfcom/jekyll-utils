@@ -193,10 +193,7 @@ def _get_contents_paper_summary():
     ## HOW
     
     
-    ## CLAIMS
-
-    
-    ## QUOTES
+    ## CLAIMS/QUOTES
 
 
     ## EXTENDS/USES
@@ -209,7 +206,7 @@ def _get_contents_paper_summary():
 
     -----
     
-    ### References
+    ## REFERENCES
 
     """
 
