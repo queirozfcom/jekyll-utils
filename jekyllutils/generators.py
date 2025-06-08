@@ -4,10 +4,11 @@ from datetime import datetime
 from subprocess import call
 
 import click
+from slugify import slugify
+
+from jekyllutils.helpers.colours import with_success_prefix
 from jekyllutils.helpers.configs import get_posts_path, get_editor_name
 from jekyllutils.helpers.editors import get_executable_from_name
-from jekyllutils.helpers.colours import with_success_prefix
-from slugify import slugify
 
 
 @click.command()
@@ -41,9 +42,14 @@ def new_post(title, tag, image):
                 .lstrip()
                 .format(title, date_str, tags))
 
+
+
     editor = get_editor_name()
     editor_executable = get_executable_from_name(editor)
-    call([editor_executable, path_to_file])
+
+    command = "{0} {1}".format(editor_executable, path_to_file)
+    call([command], shell=True)
+
     time.sleep(2)  # just to give the os time for the editor to load
 
     click.echo(with_success_prefix("Post created at: {0}".format(path_to_file)))
@@ -79,7 +85,10 @@ def new_post_paper_summary(title, tag):
 
     editor = get_editor_name()
     editor_executable = get_executable_from_name(editor)
-    call([editor_executable, path_to_file])
+
+    command = "{0} {1}".format(editor_executable, path_to_file)
+    call([command], shell=True)
+
     time.sleep(2)  # just to give the os time for the editor to load
 
     click.echo(with_success_prefix("Post (Paper Summary) created at: {0}".format(path_to_file)))
@@ -115,7 +124,10 @@ def new_post_crypto_asset_overview(title, tag):
 
     editor = get_editor_name()
     editor_executable = get_executable_from_name(editor)
-    call([editor_executable, path_to_file])
+
+    command = "{0} {1}".format(editor_executable, path_to_file)
+    call([command], shell=True)
+
     time.sleep(2)  # just to give the os time for the editor to load
 
     click.echo(with_success_prefix("Post (Paper Summary) created at: {0}".format(path_to_file)))

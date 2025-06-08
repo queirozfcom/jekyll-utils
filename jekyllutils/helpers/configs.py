@@ -17,7 +17,7 @@ def get_editor_name():
 
 def clear_configs():
     _create_config_file_if_needed()
-    with(open(_get_config_file(), "w")) as f:
+    with(open(_get_path_to_config_file(), "w")) as f:
         f.write("")
 
 
@@ -27,9 +27,9 @@ def dump_configs():
     """
     _create_config_file_if_needed()
     print("\n==Dump Config file==\n")
-    print("Location: {0}\n".format(_get_config_file()))
+    print("Location: {0}\n".format(_get_path_to_config_file()))
     print("Contents:\n")
-    with open(_get_config_file()) as f:
+    with open(_get_path_to_config_file()) as f:
         print(f.read())
 
 

@@ -1,5 +1,6 @@
 import time
-from subprocess import call
+import subprocess
+# from subprocess import call
 
 import click
 from jekyllutils.helpers.configs import get_posts_path, get_editor_name
@@ -34,7 +35,7 @@ def edit_post(keywords):
         path_to_file = path_to_posts_directory + "/" + post_files[0]
         editor = get_editor_name()
         editor_executable = get_executable_from_name(editor)
-        call([editor_executable, path_to_file])
+        subprocess.run([editor_executable +" "+ path_to_file], shell=True)
         time.sleep(2)  # just to give the os time for the editor to load
 
 
