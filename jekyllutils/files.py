@@ -57,11 +57,28 @@ def list_filenames_by_tag(absolute_directory, tags):
             absolute_path_to_file = os.path.join(root, filename)
 
             with open(absolute_path_to_file, "r") as f:
-                for line in f:
-                    if line.strip().startswith("tags:"):
-                        if match_all(line, tags):
-                            matches.append(filename)
-                        break
+
+                contents = f.read().lower().strip()
+
+                if _has_tags(contents, tags):
+
+                    if _is_not_published(contents):
+                        prefix = wrap_yellow("[UNP] ")
+                        matches.append(f"{prefix} {filename}")
+                        continue
+
+                    if _is_wip(contents):
+                        prefix = wrap_blue("[WIP] ")
+                        matches.append(f"{prefix} {filename}")
+                        continue
+
+                    # if the file is published, check for TODOs
+                    if _is_todo(contents):
+                        prefix = wrap_green("[TODO]")
+                        matches.append(f"{prefix} {filename}")
+                        continue
+                        
+                    matches.append(filename)
 
     return matches
 
@@ -83,24 +100,63 @@ def list_unpublished_filenames(absolute_directory, include_wip):
 
             with open(absolute_path_to_file, "r") as f:
 
-                for line in f:
+                contents = f.read().lower().strip()
 
-                    line_clean = line.strip().lower()
+                if _is_not_published(contents):
+                    prefix = wrap_yellow("[UNP] ")
+                    matches.append(f"{prefix} {filename}")
+                    continue
 
-                    if line_clean.startswith("published:") and match_all(line_clean, ("false",)):
-                        prefix = wrap_yellow("[UNP] ")
-                        matches.append(f"{prefix} {filename}")
-                        break
-                    elif include_wip and ("wip alert" in line_clean):
-                        prefix = wrap_blue("[WIP] ")
-                        matches.append(f"{prefix} {filename}")
-                        break
-                    elif include_wip and (re.search("todo: ", line_clean) or
-                                          re.search("todo\n", line_clean) or
-                                          re.search("^todo ", line_clean) or
-                                          re.search(" todo ", line_clean)):
-                        prefix = wrap_green("[TODO]")
-                        matches.append(f"{prefix} {filename}")
-                        break
+                if include_wip and _is_wip(contents):
+                    prefix = wrap_blue("[WIP] ")
+                    matches.append(f"{prefix} {filename}")
+                    continue
+
+                # if the file is published, check for TODOs
+                if include_wip and _is_todo(contents):
+                    prefix = wrap_green("[TODO]")
+                    matches.append(f"{prefix} {filename}")
+                    continue
 
     return list(set(matches))
+
+
+def _has_tags(contents: str, tags: tuple):
+    for line in contents.lower().splitlines():
+        if line.strip().startswith("tags:"):
+            if match_all(line, tags):
+                return True
+
+    return False
+
+
+def _is_not_published(contents):
+    """
+    Checks if the contents of a file are not published.
+    :param contents: the contents of the file
+    :return: True if the file is not published, False otherwise
+    """
+    return "published: false" in contents or "published: false\n" in contents or "published: false " in contents
+
+
+def _is_wip(contents):
+    for line in contents.splitlines():
+        line_clean = line.strip().lower()
+
+        if "wip alert" in line_clean:
+            return True
+
+    return False
+
+
+def _is_todo(contents):
+    for line in contents.splitlines():
+        line_clean = line.strip().lower()
+
+        if (re.search("todo: ", line_clean) or
+            re.search("todo\n", line_clean) or
+            re.search("^todo ", line_clean) or
+            re.search(" todo ", line_clean)):
+            return True
+
+    return False
