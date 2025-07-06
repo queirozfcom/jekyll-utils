@@ -77,10 +77,11 @@ def list_filenames_by_tag(absolute_directory, tags):
                         prefix = wrap_green("[TODO]")
                         matches.append(f"{prefix} {filename}")
                         continue
-                        
-                    matches.append(filename)
 
-    return matches
+                    prefix = "      "
+                    matches.append(f"{prefix} {filename}")
+
+    return list(set(matches))
 
 
 def list_unpublished_filenames(absolute_directory, include_wip):

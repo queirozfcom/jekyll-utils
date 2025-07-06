@@ -13,6 +13,6 @@ def sort_filenames_ignoring_leading_text(list_of_filenames, reverse=None):
     if reverse is None:
         reverse = False
 
-    leading_pattern_to_remove = r"""^[^]]+\]\s*"""
+    leading_pattern_to_remove = r"""(^[^]]+\]\s?[^\s]+\s|^\s+)"""
 
     return sorted(list_of_filenames, key=lambda a: re.sub(leading_pattern_to_remove, "", a), reverse=reverse)

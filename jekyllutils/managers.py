@@ -53,10 +53,8 @@ def list_by_tag(tags, reverse):
     if len(filenames) == 0:
         raise click.UsageError('No files match given tags')
     else:
-        if reverse:
-            click.echo_via_pager('\n'.join(sorted(filenames, reverse=True)))
-        else:
-            click.echo_via_pager('\n'.join(sorted(filenames)))
+        filenames = sort_filenames_ignoring_leading_text(filenames, reverse=reverse)
+        click.echo_via_pager('\n'.join(filenames))
 
 
 @click.command()
@@ -71,10 +69,5 @@ def list_unpublished(reverse, include_wip_alerts):
     if len(filenames) == 0:
         raise click.UsageError('No files found. Well done!')
     else:
-
-        if reverse:
-            output = click.echo_via_pager('\n'.join(sort_filenames_ignoring_leading_text(filenames, reverse=True)))
-        else:
-            output = click.echo_via_pager('\n'.join(sort_filenames_ignoring_leading_text(filenames)))
-
-        return output
+        filenames = sort_filenames_ignoring_leading_text(filenames, reverse=reverse)
+        click.echo_via_pager('\n'.join(filenames))
